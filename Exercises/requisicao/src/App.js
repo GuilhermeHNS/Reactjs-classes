@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
+import Style from './Style.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//https://sujeitoprogramador.com/rn-api/?api=posts
+
+class App extends Component{
+
+    constructor(props){
+        super(props)
+        this.state={
+            nutri:[]
+        }
+    }
+
+    componentDidMount(){
+        let url = 'https://sujeitoprogramador.com/rn-api/?api=posts'
+        fetch(url)
+        .then((r)=>r.json())
+        .then((json)=>{
+            let state = this.state
+            state.nutri = json
+            this.setState(state)
+        })
+    }
+   
+
+    render(){
+        return(
+            <div className="container">
+                <header>
+                    <h1>React Nutri</h1>
+                </header>
+                {this.state.nutri.map((item)=>{
+                    return(
+                        <article key={item.id} className="post">
+                            <strong className="titulo">{item.titulo}</strong>
+                            <img src={item.capa} className="capa"></img>
+                            <p className="subtitulo">{item.subtitulo}</p>
+                            <a className="botao" href="#">Veja mais!</a>
+                        </article>
+                    )
+                })}
+
+
+            </div>
+        )
+    }
 }
 
-export default App;
+export default App
